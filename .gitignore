@@ -1,0 +1,7 @@
+*.pyc
+*.png
+*.jpg
+.project
+.pydevproject
+*.db
+NossaCarona/settings.py
