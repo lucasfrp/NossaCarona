@@ -1,4 +1,52 @@
-<h1>Nossa Carona</h1>
-<h4>Agora em Django</h4>
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Nossa Carona</title>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	</head>
 
-<h1>Em construcao</h1><img src="/img/construcao.gif">
+	<body>
+		<div id="fb-root"></div>
+		<script>
+		  function onlogin(){
+		  	alert('logado');
+		  }
+
+		  window.fbAsyncInit = function() {
+		    // init the FB JS SDK
+		    FB.init({
+		      appId      : '348020795298948',                        // App ID from the app dashboard
+		      channelUrl : '/channel', // Channel file for x-domain comms
+		      status     : true,                                 // Check Facebook Login status
+		      xfbml      : true                                  // Look for social plugins on the page
+		    });
+		    FB.XFBML.parse();
+		  };
+
+		  // Load the SDK asynchronously
+		  (function(d, s, id){
+		     var js, fjs = d.getElementsByTagName(s)[0];
+		     if (d.getElementById(id)) {return;}
+		     js = d.createElement(s); js.id = id;
+		     js.src = "//connect.facebook.net/en_US/all.js";
+		     fjs.parentNode.insertBefore(js, fjs);
+		   }(document, 'script', 'facebook-jssdk'));
+		</script>
+
+		<h1> Nossa Carona </h1>
+		<div id="div-conteudo">
+			{%block content%}
+				{% if not user %}
+					<button onclick="onlogin();">a</button>
+					<fb:login-button 
+						registration-url="/usuario/login"
+						fields="name,birthday,gender,email"
+					/>
+				{% else %}
+					<h4>Bem vindo, {{user.nome}}</h4>
+				{% endif %}
+			{% endblock %}
+		</div>
+	</body>
+
+</html>

@@ -4,4 +4,5 @@
 .project
 .pydevproject
 *.db
+NossaCarona/.DS_Store
 NossaCarona/NossaCarona/settings.py

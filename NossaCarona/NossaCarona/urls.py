@@ -6,10 +6,11 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # Examples:
     url(r'^$', 'NossaCarona.views.index'),
+    url(r'^channel/$', 'NossaCarona.views.channel'),
     # url(r'^NossaCarona/', include('NossaCarona.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
+    url(r'^usuario/', include('usuario.urls')),
     url(r'^admin/', include(admin.site.urls)),
 )
