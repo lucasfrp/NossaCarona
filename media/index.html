@@ -1,17 +1,19 @@
 <!DOCTYPE html>
-<html>
+{% load dajaxice_templatetags %}
+{% load staticfiles %}
+<html xmlns:fb="http://ogp.me/ns/fb#">
 	<head>
 		<title>Nossa Carona</title>
+		{% dajaxice_js_import %}
+		<script type="text/javascript" src="{% static '/static/dajax/jquery.dajax.core.js' %}"></script>
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="/media/css/bootstrap-responsive.min.css">
+		<link rel="stylesheet" type="text/css" href="/media/css/bootstrap.min.css">
 	</head>
 
 	<body>
 		<div id="fb-root"></div>
 		<script>
-		  function onlogin(){
-		  	alert('logado');
-		  }
-
 		  window.fbAsyncInit = function() {
 		    // init the FB JS SDK
 		    FB.init({
@@ -21,14 +23,33 @@
 		      xfbml      : true                                  // Look for social plugins on the page
 		    });
 		    FB.XFBML.parse();
+
+		    FB.getLoginStatus(function(response) {
+				if (response.status === 'connected') {
+					{% if not user %}
+						$("#div-conteudo").html("<button onclick='login_with_fb();'>Login</button>");
+					{% endif %}	
+				} else if (response.status === 'not_authorized') {
+					
+				} else {
+					
+				}
+			});
+
 		  };
+
+		  function login_with_fb(){
+				FB.api('/me',function(response){
+					Dajaxice.usuario.login_with_fb(Dajax.process,{'response':response});
+				});
+			}
 
 		  // Load the SDK asynchronously
 		  (function(d, s, id){
 		     var js, fjs = d.getElementsByTagName(s)[0];
 		     if (d.getElementById(id)) {return;}
 		     js = d.createElement(s); js.id = id;
-		     js.src = "//connect.facebook.net/en_US/all.js";
+		     js.src = "http://connect.facebook.net/en_US/all.js";
 		     fjs.parentNode.insertBefore(js, fjs);
 		   }(document, 'script', 'facebook-jssdk'));
 		</script>
@@ -37,16 +58,18 @@
 		<div id="div-conteudo">
 			{%block content%}
 				{% if not user %}
-					<button onclick="onlogin();">a</button>
 					<fb:login-button 
-						registration-url="/usuario/login"
-						fields="name,birthday,gender,email"
-					/>
+						show-faces="true" 
+						onlogin="login_with_fb();"
+						width="200" 
+						max-rows="2"
+					</fb:login-button>
 				{% else %}
-					<h4>Bem vindo, {{user.nome}}</h4>
+					<h4>Bem vindo, {{user.user.first_name}}</h4>
+					<a href="usuario/logout">Logout</a>
 				{% endif %}
 			{% endblock %}
 		</div>
 	</body>
-
+	<script type="text/javascript" src="/media/js/bootstrap.min.js"></script>
 </html>
