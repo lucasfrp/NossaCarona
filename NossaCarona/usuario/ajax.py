@@ -6,8 +6,8 @@ from datetime import datetime
 
 @dajaxice_register
 def login_with_fb(request, response):
-    print response
     dajax = Dajax()
+    '''
     try:
         usuario = Usuario.objects.get(fb_id=response['id'])
     except Usuario.DoesNotExist:
@@ -19,5 +19,7 @@ def login_with_fb(request, response):
         usuario.save()
     request.session['user_id'] = usuario.pk
     dajax.redirect('/')
+    '''
+    print response
     return dajax.json()
     

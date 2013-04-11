@@ -26,7 +26,7 @@
 
 		    FB.getLoginStatus(function(response) {
 				if (response.status === 'connected') {
-					{% if not user %}
+					{% if not user.usuario %}
 						$("#div-conteudo").html("<button onclick='login_with_fb();'>Login</button>");
 					{% endif %}	
 				} else if (response.status === 'not_authorized') {
@@ -39,9 +39,10 @@
 		  };
 
 		  function login_with_fb(){
-				FB.api('/me',function(response){
-					Dajaxice.usuario.login_with_fb(Dajax.process,{'response':response});
-				});
+				location.href="https://www.facebook.com/dialog/oauth?client_id=348020795298948&redirect_uri=http://localhost:8000/usuario/login";
+				//FB.api('/me',function(response){
+				//	Dajaxice.usuario.login_with_fb(Dajax.process,{'response':response});
+				//});
 			}
 
 		  // Load the SDK asynchronously
@@ -57,15 +58,16 @@
 		<h1> Nossa Carona </h1>
 		<div id="div-conteudo">
 			{%block content%}
-				{% if not user %}
+				{% if not user.usuario %}
 					<fb:login-button 
 						show-faces="true" 
 						onlogin="login_with_fb();"
 						width="200" 
+						scope="email,user_birthday"
 						max-rows="2"
 					</fb:login-button>
 				{% else %}
-					<h4>Bem vindo, {{user.user.first_name}}</h4>
+					<h4>Bem vindo, {{user.first_name}}</h4>
 					<a href="usuario/logout">Logout</a>
 				{% endif %}
 			{% endblock %}
